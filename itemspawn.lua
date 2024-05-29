@@ -15,7 +15,7 @@ local function isUsernameInTable(username)
 end
 
 local function onPlayerChatted(player, message)
-    if message == "nwpnwp" then
+    if message == "yows" then
         if isUsernameInTable(player.Name) then
             --
             print("Player's username matches: " .. player.Name)
