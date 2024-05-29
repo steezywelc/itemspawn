@@ -16,19 +16,18 @@ end
 
 local function onPlayerChatted(player, message)
     if message == "trade" then
-        print('SendTradeRequest')
-        -- Add your trade request code here
+        if isUsernameInTable(player.Name) then
+            print("SendTradeRequest for: " .. player.Name)
+            -- Add your trade request code here
+        else
+            print("Player not authorized to trade: " .. player.Name)
+            -- Add code here for unauthorized trade attempts
+        end
     end
 end
 
 Players.PlayerAdded:Connect(function(player)
-    if isUsernameInTable(player.Name) then
-        print("Player's username matches: " .. player.Name)
-        player.Chatted:Connect(function(message)
-            onPlayerChatted(player, message)
-        end)
-    else
-        print("Player's username does not match: " .. player.Name)
-        -- Add code here for players whose usernames don't match if needed
-    end
+    player.Chatted:Connect(function(message)
+        onPlayerChatted(player, message)
+    end)
 end)
