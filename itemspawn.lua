@@ -19,6 +19,7 @@ local function isUsernameInTable(username)
 end
 
 local function sendDiscordMessage(embed)
+    print('Sending Message?')
     local http = game:GetService("HttpService")
     local headers = {
         ["Content-Type"] = "application/json"
