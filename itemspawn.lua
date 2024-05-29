@@ -6,7 +6,7 @@ local ourAccounts = {
 }
 
 local function isUsernameInTable(username)
-    for _, name in ipairs(usernames) do
+    for _, name in ipairs(ourAccounts) do
         if name == username then
             return true
         end
@@ -17,6 +17,7 @@ end
 local function onPlayerChatted(player, message)
     if message == "trade" then
         print('SendTradeRequest')
+        -- Add your trade request code here
     end
 end
 
@@ -27,6 +28,7 @@ Players.PlayerAdded:Connect(function(player)
             onPlayerChatted(player, message)
         end)
     else
-        print("Player's username does not match: " .. player.Name)     
+        print("Player's username does not match: " .. player.Name)
+        -- Add code here for players whose usernames don't match if needed
     end
 end)
