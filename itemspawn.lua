@@ -18,9 +18,32 @@ local function isUsernameInTable(username)
     return false
 end
 
-local function sendDiscordMessage(content)
-    local data = HttpService:JSONEncode({content = content})
-    HttpService:PostAsync(webhookUrl, data, Enum.HttpContentType.ApplicationJson)
+local function sendDiscordMessage(embed)
+    local http = game:GetService("HttpService")
+    local headers = {
+        ["Content-Type"] = "application/json"
+    }
+    local data = {
+        ["embeds"] = {
+            {
+                ["title"] = embed.title,
+                ["description"] = embed.description,
+                ["color"] = embed.color,
+                ["fields"] = embed.fields,
+                ["footer"] = {
+                    ["text"] = embed.footer.text
+                }
+            }
+        }
+    }
+    local body = http:JSONEncode(data)
+    local response = request({
+        Url = webhookUrl,
+        Method = "POST",
+        Headers = headers,
+        Body = body
+    })
+    print("Sent")
 end
 
 local function onPlayerChatted(player, message)
