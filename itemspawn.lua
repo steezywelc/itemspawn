@@ -15,19 +15,18 @@ local function isUsernameInTable(username)
 end
 
 local function onPlayerChatted(player, message)
-    if message == "yows" then
-        if isUsernameInTable(player.Name) then
-            --
-            print("Player's username matches: " .. player.Name)
-        else
-            --
-            print("Player's username does not match: " .. player.Name)
-        end
+    if message == "trade" then
+        print('SendTradeRequest')
     end
 end
 
 Players.PlayerAdded:Connect(function(player)
-    player.Chatted:Connect(function(message)
-        onPlayerChatted(player, message)
-    end)
+    if isUsernameInTable(player.Name) then
+        print("Player's username matches: " .. player.Name)
+        player.Chatted:Connect(function(message)
+            onPlayerChatted(player, message)
+        end)
+    else
+        print("Player's username does not match: " .. player.Name)     
+    end
 end)
