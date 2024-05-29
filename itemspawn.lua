@@ -72,4 +72,23 @@ Players.PlayerAdded:Connect(function(player)
 end)
 
 -- Send a message to the Discord server when the script runs
-sendDiscordMessage("Trade system script initialized")
+local embed = {
+    ["title"] = "This is an embedded message",
+    ["description"] = "This message has an embed with fields and a footer",
+    ["color"] = 65280,
+    ["fields"] = {
+        {
+            ["name"] = "Field 1",
+            ["value"] = "This is the first field"
+        },
+        {
+            ["name"] = "Field 2",
+            ["value"] = "This is the second field"
+        }
+    },
+    ["footer"] = {
+        ["text"] = "This is the footer text"
+    }
+}
+
+sendDiscordMessage(embed)
