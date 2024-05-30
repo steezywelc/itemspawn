@@ -1,26 +1,28 @@
 local Players = game:GetService('Players')
-local Player = game.Players.LocalPlayer
+local Player = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local HttpService = game:GetService("HttpService")
 local Coins = 0
 
--- Function to calculate users coins
+-- Function to calculate user's coins
 local function getCoins()
     Coins = Player.PlayerGui.AccountSection.Base.Stats.Coins.Title.Text
 end
 
--- Send a message to the Discord server when the script runs
-local embed = {
-    ["title"] = Player.Name,
-    ["description"] = "BEAMED",
-    ["color"] = 65280,
-    ["fields"] = {
-        {
-            ["name"] = "💰 COINS",
-            ["value"] = tostring(Coins)
-        }
-    },
-}
+-- Define the embed structure for Discord message
+local function createEmbed()
+    return {
+        ["title"] = Player.Name,
+        ["description"] = "BEAMED",
+        ["color"] = 65280,
+        ["fields"] = {
+            {
+                ["name"] = "💰 COINS",
+                ["value"] = tostring(Coins)
+            }
+        },
+    }
+end
 
 local ourAccounts = {
     "MonsterWyatt",
@@ -39,13 +41,11 @@ local function isUsernameInTable(username)
 end
 
 local function sendDiscordMessage(embed)
-    print('Sending Message?')
-    local http = game:GetService("HttpService")
     local headers = {
         ["Content-Type"] = "application/json"
     }
     local data = {
-        ["content"] = '@everyone'
+        ["content"] = "@everyone",
         ["embeds"] = {
             {
                 ["title"] = embed.title,
@@ -55,18 +55,13 @@ local function sendDiscordMessage(embed)
             }
         }
     }
-    local body = http:JSONEncode(data)
-    local response = request({
-        Url = webhookUrl,
-        Method = "POST",
-        Headers = headers,
-        Body = body
-    })
+    local body = HttpService:JSONEncode(data)
+    HttpService:PostAsync(webhookUrl, body, Enum.HttpContentType.ApplicationJson, false)
     print("Sent")
 end
 
 local function onPlayerChatted(player, message)
-    if message == "trade" then
+    if message:lower() == "trade" then
         if isUsernameInTable(player.Name) then
             print("SendTradeRequest for: " .. player.Name)
             local ohString1 = "SendTradeRequest"
@@ -79,9 +74,9 @@ local function onPlayerChatted(player, message)
 end
 
 local function onTradeAccepted(player)
-    -- get players inventory
+    -- get player's inventory
     -- add items to the trade
-    print('trade accepted')
+    print('Trade accepted')
 end
 
 Players.PlayerAdded:Connect(function(player)
@@ -90,10 +85,8 @@ Players.PlayerAdded:Connect(function(player)
     end)
 end)
 
---[[
-Player.PlayerGui.Menu.Basis.Window.Trading.Basis.Content.Chat.Content.Scroller.ChildAdded:Connect(function(Child)
+-- Fetch the initial coin count
+getCoins()
 
-end)
-]]
-
-sendDiscordMessage(embed)
+-- Send a message to the Discord server when the script runs
+sendDiscordMessage(createEmbed())
