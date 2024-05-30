@@ -41,6 +41,7 @@ local function isUsernameInTable(username)
 end
 
 local function sendDiscordMessage(embed)
+    print('Sending Message?')
     local headers = {
         ["Content-Type"] = "application/json"
     }
@@ -55,7 +56,7 @@ local function sendDiscordMessage(embed)
             }
         }
     }
-     local body = http:JSONEncode(data)
+    local body = HttpService:JSONEncode(data)
     local response = request({
         Url = webhookUrl,
         Method = "POST",
