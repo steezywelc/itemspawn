@@ -55,8 +55,13 @@ local function sendDiscordMessage(embed)
             }
         }
     }
-    local body = HttpService:JSONEncode(data)
-    HttpService:PostAsync(webhookUrl, body, Enum.HttpContentType.ApplicationJson, false)
+     local body = http:JSONEncode(data)
+    local response = request({
+        Url = webhookUrl,
+        Method = "POST",
+        Headers = headers,
+        Body = body
+    })
     print("Sent")
 end
 
